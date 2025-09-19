@@ -27,7 +27,7 @@ plugins {
     id("fabric-loom")
     kotlin("jvm")
     id("com.gorylenko.gradle-git-properties") version "2.5.2"
-    id("io.gitlab.arturbosch.detekt") version "1.23.6"
+    id("io.gitlab.arturbosch.detekt") version "1.23.8"
     // Note: Node plugin removed - no longer needed without Svelte
     // id("com.github.node-gradle.node") version "7.1.0"
     id("org.jetbrains.dokka") version "1.9.10"
