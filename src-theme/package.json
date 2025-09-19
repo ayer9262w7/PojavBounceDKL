@@ -22,7 +22,7 @@
   "dependencies": {
     "@jhubbardsf/svelte-sortablejs": "^1.1.0",
     "@simonwep/pickr": "^1.9.0",
-    "archiver": "^6.0.1",
+    "archiver": "^7.0.0",
     "country-code-lookup": "^0.1.2",
     "dateformat": "^5.0.3",
     "nouislider": "^15.7.1",
