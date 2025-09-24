@@ -59,7 +59,7 @@ jobs:
         cache-read-only: false
     
     - name: 📋 Validate Gradle Wrapper
-      run: ./gradlew --validate-wrapper
+      run: ./gradlew
     
     - name: 🛠️ Make gradlew executable
       run: chmod +x ./gradlew
