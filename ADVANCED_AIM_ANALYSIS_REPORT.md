@@ -150,7 +150,7 @@ class BiometricMovementSimulator {
     // Simulate different human archetypes
     enum class PlayerArchetype {
         CASUAL,      // Relaxed, imprecise movements
-        COMPETITIVE, // Sharp, efficient movements  
+        COMPETITIVE, // Sharp, efficient movements
         NERVOUS,     // Jittery, over-corrective
         EXPERIENCED, // Smooth, predictive movements
         TIRED        // Delayed reactions, drifting
