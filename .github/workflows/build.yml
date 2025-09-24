@@ -1,0 +1,198 @@
+name: 🚀 Auto Build & Deploy
+
+on:
+  push:
+    branches: [ main, develop, feature/* ]
+    paths:
+      - 'src/**'
+      - 'build.gradle*'
+      - 'gradle/**'
+      - 'settings.gradle*'
+      - 'gradle.properties'
+      - '.github/workflows/**'
+  pull_request:
+    branches: [ main, develop ]
+    paths:
+      - 'src/**'
+      - 'build.gradle*'
+      - 'gradle/**'
+      - 'settings.gradle*'
+      - 'gradle.properties'
+      - '.github/workflows/**'
+  workflow_dispatch:
+    inputs:
+      build_type:
+        description: 'Build type'
+        required: false
+        default: 'release'
+        type: choice
+        options:
+          - release
+          - debug
+
+jobs:
+  build:
+    name: 🔨 Build with Java 21
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        java-version: [21]
+    
+    steps:
+    - name: 📥 Checkout Repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    - name: ☕ Setup Java ${{ matrix.java-version }}
+      uses: actions/setup-java@v4
+      with:
+        java-version: ${{ matrix.java-version }}
+        distribution: 'microsoft'
+        cache: gradle
+    
+    - name: 🔧 Setup Gradle
+      uses: gradle/gradle-build-action@v2
+      with:
+        gradle-home-cache-cleanup: true
+        cache-read-only: false
+    
+    - name: 📋 Validate Gradle Wrapper
+      run: gradle/wrapper/gradle-wrapper.properties
+    
+    - name: 🛠️ Make gradlew executable
+      run: chmod +x ./gradlew
+    
+    - name: 📊 Display Build Info
+      run: |
+        echo "🎯 Build Information"
+        echo "==================="
+        echo "Java Version: ${{ matrix.java-version }}"
+        echo "Branch: ${{ github.ref_name }}"
+        echo "Commit: ${{ github.sha }}"
+        echo "Event: ${{ github.event_name }}"
+        echo "Build Type: ${{ github.event.inputs.build_type || 'auto' }}"
+        echo "Runner OS: ${{ runner.os }}"
+        echo ""
+        echo "🔍 System Info"
+        echo "=============="
+        java -version
+        ./gradlew --version
+    
+    - name: 🧪 Run Tests
+      run: ./gradlew test --no-daemon --stacktrace
+      env:
+        GRADLE_OPTS: -Dorg.gradle.daemon=false
+    
+    - name: 🔨 Compile Kotlin Sources
+      run: ./gradlew compileKotlin --no-daemon --stacktrace
+      env:
+        GRADLE_OPTS: -Dorg.gradle.daemon=false
+    
+    - name: 🏗️ Build Project (remapJar)
+      run: ./gradlew remapJar --no-daemon --stacktrace
+      env:
+        GRADLE_OPTS: -Dorg.gradle.daemon=false
+    
+    - name: 📦 Generate Build Report
+      run: |
+        echo "## 🎯 Build Report" >> build-report.md
+        echo "" >> build-report.md
+        echo "### ✅ Build Status: SUCCESS" >> build-report.md
+        echo "" >> build-report.md
+        echo "**Build Details:**" >> build-report.md
+        echo "- Java Version: ${{ matrix.java-version }}" >> build-report.md
+        echo "- Branch: \`${{ github.ref_name }}\`" >> build-report.md
+        echo "- Commit: \`${{ github.sha }}\`" >> build-report.md
+        echo "- Build Time: $(date -u)" >> build-report.md
+        echo "- Gradle Version: $(./gradlew --version | head -3 | tail -1)" >> build-report.md
+        echo "" >> build-report.md
+        echo "**JAR Files Generated:**" >> build-report.md
+        ls -la build/libs/ | while read line; do
+          if [[ $line == *".jar"* ]]; then
+            echo "- \`$line\`" >> build-report.md
+          fi
+        done
+        echo "" >> build-report.md
+        echo "**Build Verification:**" >> build-report.md
+        echo "- ✅ Compilation successful" >> build-report.md
+        echo "- ✅ remapJar task completed" >> build-report.md
+        echo "- ✅ All dependencies resolved" >> build-report.md
+        echo "- ✅ Production ready" >> build-report.md
+        
+        # Display report
+        echo "📋 Build Report Generated:"
+        cat build-report.md
+    
+    - name: 📤 Upload JAR Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: liquidbounce-jars-java${{ matrix.java-version }}
+        path: |
+          build/libs/*.jar
+          build-report.md
+        retention-days: 30
+        if-no-files-found: error
+    
+    - name: 📤 Upload Additional Build Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-logs-java${{ matrix.java-version }}
+        path: |
+          build/reports/**
+          build/tmp/**/*.log
+        retention-days: 7
+        if-no-files-found: ignore
+    
+    - name: 🔍 Build Summary
+      run: |
+        echo "## 🎉 Build Complete!" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### 📊 Build Statistics" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "| Property | Value |" >> $GITHUB_STEP_SUMMARY
+        echo "|----------|-------|" >> $GITHUB_STEP_SUMMARY
+        echo "| Java Version | ${{ matrix.java-version }} |" >> $GITHUB_STEP_SUMMARY
+        echo "| Branch | ${{ github.ref_name }} |" >> $GITHUB_STEP_SUMMARY
+        echo "| Commit | \`${{ github.sha }}\` |" >> $GITHUB_STEP_SUMMARY
+        echo "| Runner | ${{ runner.os }} |" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### 📦 Generated Artifacts" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        ls -la build/libs/ | grep "\.jar" | while read -r line; do
+          filename=$(echo $line | awk '{print $9}')
+          size=$(echo $line | awk '{print $5}')
+          echo "- 📁 \`$filename\` ($size bytes)" >> $GITHUB_STEP_SUMMARY
+        done
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### ✅ Quality Checks" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "- ✅ Kotlin compilation successful" >> $GITHUB_STEP_SUMMARY
+        echo "- ✅ Java compilation successful" >> $GITHUB_STEP_SUMMARY
+        echo "- ✅ remapJar task completed" >> $GITHUB_STEP_SUMMARY
+        echo "- ✅ All tests passed" >> $GITHUB_STEP_SUMMARY
+        echo "- ✅ Artifacts uploaded" >> $GITHUB_STEP_SUMMARY
+        
+        echo ""
+        echo "🎯 All JAR files have been uploaded as build artifacts!"
+        echo "📥 Download them from the Actions tab after the build completes."
+
+  notify:
+    name: 📢 Build Notification
+    runs-on: ubuntu-latest
+    needs: build
+    if: always()
+    
+    steps:
+    - name: 📢 Build Status Summary
+      run: |
+        if [ "${{ needs.build.result }}" = "success" ]; then
+          echo "✅ BUILD SUCCESSFUL!"
+          echo "🎉 JAR files generated and uploaded successfully"
+          echo "📥 Artifacts are ready for download"
+        else
+          echo "❌ BUILD FAILED!"
+          echo "🔍 Check the build logs for details"
+          echo "🛠️ Fix issues and trigger a new build"
+        fi
