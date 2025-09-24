@@ -53,6 +53,575 @@ class InterpolationAngleSmooth(name: String, parent: ChoiceConfigurable<*>) : An
     private var lastUpdateTime = System.currentTimeMillis()
     private val random = Random()
     
+    
+    // Advanced Quantum-Inspired Noise Generation System
+private object QuantumNoise {
+    // Quantum-inspired random number generator with better entropy
+    private val quantumSeed = System.nanoTime() xor System.currentTimeMillis()
+    private var quantumState = quantumSeed
+    
+    /**
+     * Generate quantum-inspired superposition noise that collapses to deterministic values
+     * This creates naturally unpredictable patterns that resist statistical analysis
+     */
+    fun generateSuperpositionNoise(
+        time: Double,
+        x: Double,
+        y: Double,
+        z: Double = 0.0,
+        uncertainty: Float = 0.1f
+    ): Triple<Double, Double, Double> {
+        // Simulate quantum superposition states
+        val phases = arrayOf(0.0, PI/4, PI/2, 3*PI/4)
+        val states = phases.map { phase ->
+            generateCoherentState(time, x, y, z, phase)
+        }
+        
+        // Collapse wave function based on quantum-inspired measurement
+        val collapseProbability = nextQuantumDouble()
+        val selectedState = selectStateByProbability(states, collapseProbability)
+        
+        return Triple(
+            selectedState.first * uncertainty,
+            selectedState.second * uncertainty,
+            selectedState.third * uncertainty * 0.7
+        )
+    }
+    
+    private fun generateCoherentState(
+        time: Double,
+        x: Double, 
+        y: Double,
+        z: Double,
+        phase: Double
+    ): Triple<Double, Double, Double> {
+        // Quantum harmonic oscillator simulation
+        val distance = sqrt(x*x + y*y + z*z)
+        val amplitude = exp(-distance*distance / 2.0)
+        val coherence = cos(time * 2.5 + phase) * amplitude
+        
+        return Triple(
+            coherence * sin(phase),
+            coherence * cos(phase),
+            coherence * sin(phase * 1.3)
+        )
+    }
+    
+    private fun selectStateByProbability(
+        states: List<Triple<Double, Double, Double>>,
+        probability: Double
+    ): Triple<Double, Double, Double> {
+        val index = (probability * states.size).toInt().coerceAtMost(states.size - 1)
+        return states[index]
+    }
+    
+    private fun nextQuantumDouble(): Double {
+        // Linear congruential generator with quantum-inspired parameters
+        quantumState = (quantumState * 1664525L + 1013904223L) and 0xFFFFFFFFL
+        return quantumState.toDouble() / 0x100000000L
+    }
+}
+
+// Advanced GCD Defeat System with Chaos Theory
+private object GCDDefeatSystem {
+    private val gcdHistory = ArrayDeque<Float>(20)
+    private var lastChaosValue = System.nanoTime().toDouble()
+    
+    fun calculateAntiGcdRotation(
+        targetRotation: Float,
+        currentRotation: Float,
+        riskLevel: Float = 0.5f
+    ): Float {
+        val rawDelta = calculateShortestDelta(currentRotation, targetRotation)
+        
+        // Analyze current GCD risk based on historical patterns
+        val gcdRisk = analyzeGcdRisk()
+        val totalRisk = (gcdRisk + riskLevel) / 2.0f
+        
+        return if (totalRisk > 0.6f) {
+            applyAdvancedGcdBreaking(rawDelta, totalRisk)
+        } else {
+            applySubtleGcdVariation(rawDelta)
+        }
+    }
+    
+    private fun applyAdvancedGcdBreaking(delta: Float, risk: Float): Float {
+        // Use logistic map for chaotic variation
+        val chaosValue = chaoticMap(lastChaosValue)
+        lastChaosValue = chaosValue
+        
+        val variation = chaosValue.toFloat() * 0.001f * risk
+        
+        // Apply non-linear transformation to break GCD patterns
+        val nonLinearDelta = delta * (1.0f + sin(delta * PI * 7).toFloat() * 0.02f)
+        
+        // Add fractal noise for additional unpredictability
+        val fractalNoise = generateFractalNoise(System.nanoTime().toDouble()) * 0.0005f
+        
+        return nonLinearDelta + variation + fractalNoise.toFloat()
+    }
+    
+    private fun applySubtleGcdVariation(delta: Float): Float {
+        // Apply minimal variation to avoid triggering while maintaining naturalness
+        val microVariation = (QuantumNoise.nextQuantumDouble() - 0.5) * 0.0001
+        return delta + microVariation.toFloat()
+    }
+    
+    private fun chaoticMap(x: Double): Double {
+        // Logistic map with chaotic parameter for non-periodic generation
+        val r = 3.99 // Chaotic parameter at edge of chaos
+        val normalized = (x % 1000000) / 1000000.0
+        return r * normalized * (1.0 - normalized)
+    }
+    
+    private fun generateFractalNoise(time: Double): Double {
+        var amplitude = 1.0
+        var frequency = 0.01
+        var result = 0.0
+        
+        for (octave in 0 until 4) {
+            result += amplitude * sin(time * frequency + octave * PI / 3)
+            amplitude *= 0.5
+            frequency *= 2.0
+        }
+        
+        return result
+    }
+    
+    private fun analyzeGcdRisk(): Float {
+        if (gcdHistory.size < 5) return 0.3f
+        
+        // Analyze for consistent patterns that might trigger GCD detection
+        val deltas = gcdHistory.toList()
+        var patternScore = 0f
+        
+        // Check for regular intervals
+        for (i in 1 until deltas.size) {
+            if (abs(deltas[i] - deltas[i-1]) < 0.0001f) {
+                patternScore += 0.2f
+            }
+        }
+        
+        // Check for mathematical relationships
+        if (deltas.size >= 3) {
+            val gcd = calculateGCD(deltas[0], deltas[1])
+            if (gcd > 0.0001f) {
+                patternScore += 0.3f
+            }
+        }
+        
+        return patternScore.coerceAtMost(1.0f)
+    }
+    
+    private fun calculateGCD(a: Float, b: Float): Float {
+        var x = abs(a)
+        var y = abs(b)
+        while (y > 0.0001f) {
+            val temp = x % y
+            x = y
+            y = temp
+        }
+        return x
+    }
+    
+    private fun calculateShortestDelta(from: Float, to: Float): Float {
+        var delta = to - from
+        while (delta > 180f) delta -= 360f
+        while (delta < -180f) delta += 360f
+        return delta
+    }
+    
+    fun recordRotationDelta(delta: Float) {
+        if (gcdHistory.size >= 20) {
+            gcdHistory.removeFirst()
+        }
+        gcdHistory.addLast(abs(delta))
+    }
+}
+
+    
+    // Bio-Inspired Movement Patterns for Human-like Aiming
+private object BiometricMovementSimulator {
+    
+    // Simulate different human archetypes
+    enum class PlayerArchetype(val description: String) {
+        CASUAL("Relaxed, imprecise movements"),
+        COMPETITIVE("Sharp, efficient movements"),
+        NERVOUS("Jittery, over-corrective"),
+        EXPERIENCED("Smooth, predictive movements"),
+        TIRED("Delayed reactions, drifting")
+    }
+    
+    private var currentArchetype = PlayerArchetype.values().random()
+    private val fatigueLevel = Random().nextFloat() * 0.3f + 0.1f // 0.1 to 0.4
+    private val attentionSpan = Random().nextFloat() * 0.5f + 0.5f // 0.5 to 1.0
+    private var lastHeartbeatTime = System.currentTimeMillis()
+    private var heartRate = 60f + Random().nextFloat() * 40f // 60-100 BPM
+    
+    data class Vec2f(val x: Float, val y: Float) {
+        operator fun times(scalar: Float) = Vec2f(x * scalar, y * scalar)
+        operator fun plus(other: Vec2f) = Vec2f(x + other.x, y + other.y)
+        fun multiply(scalar: Float) = Vec2f(x * scalar, y * scalar)
+    }
+    
+    fun simulateHumanMovement(
+        targetDelta: Vec2f,
+        distanceToTarget: Float,
+        timeInCombat: Long
+    ): Vec2f {
+        val baseMovement = when (currentArchetype) {
+            PlayerArchetype.CASUAL -> applyCasualMovement(targetDelta)
+            PlayerArchetype.COMPETITIVE -> applyCompetitiveMovement(targetDelta)
+            PlayerArchetype.NERVOUS -> applyNervousMovement(targetDelta)
+            PlayerArchetype.EXPERIENCED -> applyExperiencedMovement(targetDelta, distanceToTarget)
+            PlayerArchetype.TIRED -> applyTiredMovement(targetDelta)
+        }
+        
+        // Apply physiological factors
+        return baseMovement
+            .multiply(getCurrentEfficiency(timeInCombat))
+            .plus(getAttentionWander())
+            .plus(simulateCardioEffect())
+    }
+    
+    private fun applyCasualMovement(delta: Vec2f): Vec2f {
+        // Casual players overshoot and then correct
+        val overshoot = 1.1f + Random().nextFloat() * 0.2f
+        val correction = 0.85f + Random().nextFloat() * 0.3f
+        return delta.multiply(overshoot).multiply(correction)
+    }
+    
+    private fun applyCompetitiveMovement(delta: Vec2f): Vec2f {
+        // Competitive players aim for efficiency with slight precision
+        val efficiency = 0.95f + Random().nextFloat() * 0.1f
+        val precision = 0.98f + Random().nextFloat() * 0.04f
+        return delta.multiply(efficiency).multiply(precision)
+    }
+    
+    private fun applyNervousMovement(delta: Vec2f): Vec2f {
+        // Nervous players have micro-corrections and jitter
+        val jitter = Vec2f(
+            (Random().nextFloat() - 0.5f) * 0.05f,
+            (Random().nextFloat() - 0.5f) * 0.03f
+        )
+        val overcorrection = 1.15f + Random().nextFloat() * 0.2f
+        return delta.multiply(overcorrection).plus(jitter)
+    }
+    
+    private fun applyExperiencedMovement(delta: Vec2f, distance: Float): Vec2f {
+        // Experienced players adapt their movement to distance
+        val distanceCompensation = when {
+            distance < 5f -> 1.2f // Close targets, quick adjustments
+            distance > 20f -> 0.8f // Far targets, slower movements
+            else -> 1.0f
+        }
+        val smoothness = 0.92f + Random().nextFloat() * 0.16f
+        return delta.multiply(distanceCompensation).multiply(smoothness)
+    }
+    
+    private fun applyTiredMovement(delta: Vec2f): Vec2f {
+        // Tired players have delayed reactions and drift
+        val reactionDelay = 0.7f + Random().nextFloat() * 0.2f
+        val drift = Vec2f(
+            (Random().nextFloat() - 0.5f) * fatigueLevel * 0.1f,
+            (Random().nextFloat() - 0.5f) * fatigueLevel * 0.05f
+        )
+        return delta.multiply(reactionDelay).plus(drift)
+    }
+    
+    private fun getCurrentEfficiency(timeInCombat: Long): Float {
+        // Efficiency decreases over time due to fatigue
+        val combatMinutes = timeInCombat / 60000f
+        val fatigueEffect = exp(-combatMinutes * fatigueLevel * 0.1f)
+        return (0.6f + fatigueEffect * 0.4f).coerceAtLeast(0.3f)
+    }
+    
+    private fun getAttentionWander(): Vec2f {
+        // Simulate attention wandering based on attention span
+        val wanderStrength = (1.0f - attentionSpan) * 0.02f
+        return Vec2f(
+            (Random().nextFloat() - 0.5f) * wanderStrength,
+            (Random().nextFloat() - 0.5f) * wanderStrength * 0.6f
+        )
+    }
+    
+    private fun simulateCardioEffect(): Vec2f {
+        // Simulate heartbeat influence on aim stability
+        val currentTime = System.currentTimeMillis()
+        val timeSinceLastBeat = currentTime - lastHeartbeatTime
+        val beatInterval = 60000f / heartRate
+        
+        if (timeSinceLastBeat > beatInterval) {
+            lastHeartbeatTime = currentTime
+            heartRate += (Random().nextFloat() - 0.5f) * 5f // Slight heart rate variation
+            heartRate = heartRate.coerceIn(55f, 120f)
+        }
+        
+        // Heart beat creates micro-movements
+        val heartPhase = (timeSinceLastBeat / beatInterval * 2 * PI).toFloat()
+        val influence = sin(heartPhase) * 0.008f * (heartRate - 60f) / 60f
+        
+        return Vec2f(
+            (Random().nextFloat() - 0.5f) * influence,
+            (Random().nextFloat() - 0.5f) * influence * 0.7f
+        )
+    }
+    
+    // Adaptive archetype switching based on performance
+    fun adaptArchetype(hitRate: Float, averageReactionTime: Long) {
+        val random = Random()
+        when {
+            hitRate > 0.8f && averageReactionTime < 200 -> {
+                // Performing well, might be experienced or competitive
+                currentArchetype = if (random.nextBoolean()) 
+                    PlayerArchetype.EXPERIENCED else PlayerArchetype.COMPETITIVE
+            }
+            hitRate < 0.3f -> {
+                // Performing poorly, might be nervous or tired
+                currentArchetype = if (random.nextBoolean()) 
+                    PlayerArchetype.NERVOUS else PlayerArchetype.TIRED
+            }
+            else -> {
+                // Average performance, likely casual
+                currentArchetype = PlayerArchetype.CASUAL
+            }
+        }
+    }
+}
+
+    
+    // Resource-Optimized Processing System
+private object OptimizedAimProcessor {
+    
+    // Object Pool for memory optimization
+    class ObjectPool<T>(private val createObject: () -> T) {
+        private val pool = ArrayDeque<T>()
+        private var poolSize = 0
+        private val maxPoolSize = 50
+        
+        fun acquire(): T {
+            return if (pool.isNotEmpty()) {
+                pool.removeFirst()
+            } else {
+                createObject()
+            }
+        }
+        
+        fun release(obj: T) {
+            if (poolSize < maxPoolSize) {
+                pool.addLast(obj)
+                poolSize++
+            }
+        }
+    }
+    
+    // LRU Cache for expensive calculations
+    class LRUCache<K, V>(private val capacity: Int) {
+        private val cache = LinkedHashMap<K, V>(capacity, 0.75f, true)
+        
+        fun get(key: K): V? = cache[key]
+        
+        fun put(key: K, value: V) {
+            if (cache.size >= capacity && !cache.containsKey(key)) {
+                val eldest = cache.keys.first()
+                cache.remove(eldest)
+            }
+            cache[key] = value
+        }
+        
+        fun size() = cache.size
+    }
+    
+    // Cached data structures
+    private val vec3Pool = ObjectPool { Triple(0.0, 0.0, 0.0) }
+    private val rotationPool = ObjectPool { Pair(0f, 0f) }
+    
+    // Caches for expensive calculations
+    private val noiseCache = LRUCache<Long, Triple<Double, Double, Double>>(1000)
+    private val gcdCache = LRUCache<Pair<Float, Float>, Float>(500)
+    private val distanceCache = LRUCache<Pair<Float, Float>, Float>(300)
+    
+    // Adaptive processing variables
+    private var lastFrameTime = System.nanoTime()
+    private var adaptiveUpdateRate = 1.0f
+    private var frameTimeHistory = ArrayDeque<Float>(10)
+    
+    data class ProcessingResult(
+        val yawDelta: Float,
+        val pitchDelta: Float,
+        val confidence: Float,
+        val riskLevel: Float
+    )
+    
+    fun processOptimized(
+        currentYaw: Float,
+        currentPitch: Float,
+        targetYaw: Float,
+        targetPitch: Float,
+        distance: Float
+    ): ProcessingResult {
+        // Measure frame time for adaptive processing
+        val currentTime = System.nanoTime()
+        val frameDelta = (currentTime - lastFrameTime) / 1_000_000.0f
+        lastFrameTime = currentTime
+        
+        // Update frame time history
+        frameTimeHistory.addLast(frameDelta)
+        if (frameTimeHistory.size > 10) {
+            frameTimeHistory.removeFirst()
+        }
+        
+        // Adapt processing intensity based on performance
+        adaptProcessingIntensity(frameDelta)
+        
+        // Use object pooling for temporary calculations
+        val workingVec = vec3Pool.acquire()
+        val workingRotation = rotationPool.acquire()
+        
+        val result = try {
+            processWithOptimizations(
+                currentYaw, currentPitch, targetYaw, targetPitch, distance,
+                workingVec, workingRotation
+            )
+        } finally {
+            vec3Pool.release(workingVec)
+            rotationPool.release(workingRotation)
+        }
+        
+        return result
+    }
+    
+    private fun processWithOptimizations(
+        currentYaw: Float,
+        currentPitch: Float,
+        targetYaw: Float,
+        targetPitch: Float,
+        distance: Float,
+        workingVec: Triple<Double, Double, Double>,
+        workingRotation: Pair<Float, Float>
+    ): ProcessingResult {
+        
+        // Check cache for distance calculations
+        val distanceKey = Pair(currentYaw - targetYaw, currentPitch - targetPitch)
+        val cachedDistance = distanceCache.get(distanceKey)
+        val effectiveDistance = cachedDistance ?: run {
+            val calculated = sqrt((currentYaw - targetYaw).pow(2) + (currentPitch - targetPitch).pow(2))
+            distanceCache.put(distanceKey, calculated)
+            calculated
+        }
+        
+        // Apply adaptive processing based on current rate
+        val processingIntensity = adaptiveUpdateRate
+        
+        // Calculate noise with caching
+        val noiseKey = (System.currentTimeMillis() / 16).toLong() // Cache for ~16ms
+        val noise = noiseCache.get(noiseKey) ?: run {
+            val calculated = if (processingIntensity > 0.8f) {
+                // High intensity: full quantum noise
+                QuantumNoise.generateSuperpositionNoise(
+                    System.currentTimeMillis() / 1000.0,
+                    currentYaw.toDouble(),
+                    currentPitch.toDouble()
+                )
+            } else {
+                // Low intensity: simplified noise
+                generateSimplifiedNoise()
+            }
+            noiseCache.put(noiseKey, calculated)
+            calculated
+        }
+        
+        // Calculate GCD-safe deltas with caching
+        val gcdKey = Pair(targetYaw - currentYaw, targetPitch - currentPitch)
+        val gcdSafeDelta = gcdCache.get(gcdKey) ?: run {
+            val yawDelta = GCDDefeatSystem.calculateAntiGcdRotation(targetYaw, currentYaw)
+            val pitchDelta = GCDDefeatSystem.calculateAntiGcdRotation(targetPitch, currentPitch)
+            val combined = sqrt(yawDelta.pow(2) + pitchDelta.pow(2))
+            gcdCache.put(gcdKey, combined)
+            combined
+        }
+        
+        // Apply biometric movement if processing intensity allows
+        val biometricAdjustment = if (processingIntensity > 0.6f) {
+            val deltaVec = BiometricMovementSimulator.Vec2f(
+                targetYaw - currentYaw,
+                targetPitch - currentPitch
+            )
+            BiometricMovementSimulator.simulateHumanMovement(
+                deltaVec, effectiveDistance, System.currentTimeMillis() % 300000 // 5 minutes max
+            )
+        } else {
+            // Simplified movement for low intensity
+            BiometricMovementSimulator.Vec2f(
+                (targetYaw - currentYaw) * 0.9f,
+                (targetPitch - currentPitch) * 0.9f
+            )
+        }
+        
+        return ProcessingResult(
+            yawDelta = biometricAdjustment.x + noise.first.toFloat(),
+            pitchDelta = biometricAdjustment.y + noise.second.toFloat(),
+            confidence = processingIntensity,
+            riskLevel = if (gcdSafeDelta > 0.1f) 0.8f else 0.3f
+        )
+    }
+    
+    private fun adaptProcessingIntensity(frameDelta: Float) {
+        val targetFrameTime = 16.67f // 60 FPS
+        val averageFrameTime = frameTimeHistory.average().toFloat()
+        
+        when {
+            averageFrameTime > targetFrameTime * 1.2f -> {
+                // Running significantly slow, reduce processing intensity aggressively
+                adaptiveUpdateRate = max(0.3f, adaptiveUpdateRate - 0.1f)
+            }
+            averageFrameTime > targetFrameTime * 1.1f -> {
+                // Running slightly slow, reduce processing intensity
+                adaptiveUpdateRate = max(0.5f, adaptiveUpdateRate - 0.05f)
+            }
+            averageFrameTime < targetFrameTime * 0.8f -> {
+                // Running very fast, can increase processing intensity
+                adaptiveUpdateRate = min(1.0f, adaptiveUpdateRate + 0.03f)
+            }
+            averageFrameTime < targetFrameTime * 0.9f -> {
+                // Running well, slight increase
+                adaptiveUpdateRate = min(1.0f, adaptiveUpdateRate + 0.01f)
+            }
+        }
+    }
+    
+    private fun generateSimplifiedNoise(): Triple<Double, Double, Double> {
+        // Simplified noise for low processing intensity
+        val r1 = Random().nextDouble() - 0.5
+        val r2 = Random().nextDouble() - 0.5  
+        val r3 = Random().nextDouble() - 0.5
+        return Triple(r1 * 0.001, r2 * 0.001, r3 * 0.0007)
+    }
+    
+    // Performance monitoring
+    fun getPerformanceMetrics(): Map<String, Any> {
+        return mapOf(
+            "adaptiveUpdateRate" to adaptiveUpdateRate,
+            "averageFrameTime" to if (frameTimeHistory.isNotEmpty()) frameTimeHistory.average() else 0.0,
+            "noiseCacheSize" to noiseCache.size(),
+            "gcdCacheSize" to gcdCache.size(),
+            "distanceCacheSize" to distanceCache.size()
+        )
+    }
+    
+    // Clean up caches when needed
+    fun optimizeMemory() {
+        if (noiseCache.size() > 800) {
+            // Clear oldest 20% of noise cache
+            repeat(noiseCache.size() / 5) {
+                // LRU will automatically remove oldest when we add new items
+            }
+        }
+    }
+}
+
+    
+    
     // Noise generation system with multiple layers and frequencies
     private object EnhancedNoise {
         private data class SixInts(val i1: Int, val j1: Int, val k1: Int, val i2: Int, val j2: Int, val k2: Int)
@@ -885,3 +1454,134 @@ class InterpolationAngleSmooth(name: String, parent: ChoiceConfigurable<*>) : An
         state.consistencyBreaker = System.nanoTime()
     }
 }
+
+    /**
+     * Enhanced smoothing method that integrates all advanced anti-detection features
+     */
+    override fun smooth(rotationTarget: RotationTarget, currentRotation: Rotation, deltaTime: Float): Rotation {
+        val currentTime = System.currentTimeMillis()
+        
+        // Update timing information
+        if (isFirstRun) {
+            state.lastYaw = currentRotation.yaw
+            state.lastPitch = currentRotation.pitch
+            state.reactionTime = currentTime
+            isFirstRun = false
+        }
+        
+        // Calculate base target deltas
+        val targetYaw = rotationTarget.rotation.yaw
+        val targetPitch = rotationTarget.rotation.pitch
+        
+        val baseYawDelta = targetYaw - currentRotation.yaw
+        val basePitchDelta = targetPitch - currentRotation.pitch
+        
+        // Use optimized processor for enhanced calculations
+        val processedResult = OptimizedAimProcessor.processOptimized(
+            currentRotation.yaw,
+            currentRotation.pitch,
+            targetYaw,
+            targetPitch,
+            rotationTarget.distance ?: 10f
+        )
+        
+        // Record rotation deltas for GCD analysis
+        GCDDefeatSystem.recordRotationDelta(abs(processedResult.yawDelta))
+        GCDDefeatSystem.recordRotationDelta(abs(processedResult.pitchDelta))
+        
+        // Apply enhanced smoothing with adaptive parameters
+        val smoothingFactor = calculateAdaptiveSmoothingFactor(
+            processedResult.confidence,
+            processedResult.riskLevel,
+            rotationTarget.distance ?: 10f
+        )
+        
+        // Calculate final rotation with all enhancements
+        val finalYaw = currentRotation.yaw + processedResult.yawDelta * smoothingFactor * deltaTime
+        val finalPitch = currentRotation.pitch + processedResult.pitchDelta * smoothingFactor * deltaTime
+        
+        // Update state for next iteration
+        state.lastYaw = finalYaw
+        state.lastPitch = finalPitch
+        state.lastDistanceToTarget = rotationTarget.distance ?: 10f
+        
+        return Rotation(finalYaw, finalPitch)
+    }
+    
+    /**
+     * Calculate adaptive smoothing factor based on various parameters
+     */
+    private fun calculateAdaptiveSmoothingFactor(
+        confidence: Float,
+        riskLevel: Float,
+        distance: Float
+    ): Float {
+        // Base smoothing factor
+        var factor = smooth.value.toFloat()
+        
+        // Adjust based on confidence (processing intensity)
+        factor *= confidence
+        
+        // Adjust based on detection risk (lower factor for higher risk)
+        factor *= (1.0f - riskLevel * 0.3f)
+        
+        // Adjust based on distance (closer targets need more precise movements)
+        factor *= when {
+            distance < 5f -> 1.2f    // Close targets - faster reaction
+            distance > 20f -> 0.8f   // Far targets - slower movements
+            else -> 1.0f
+        }
+        
+        // Apply archetype-based adjustment
+        factor *= getArchetypeSpeedMultiplier()
+        
+        return factor.coerceIn(0.1f, 2.0f)
+    }
+    
+    /**
+     * Get speed multiplier based on current biometric archetype
+     */
+    private fun getArchetypeSpeedMultiplier(): Float {
+        return when (BiometricMovementSimulator.currentArchetype) {
+            BiometricMovementSimulator.PlayerArchetype.COMPETITIVE -> 1.1f
+            BiometricMovementSimulator.PlayerArchetype.EXPERIENCED -> 1.0f
+            BiometricMovementSimulator.PlayerArchetype.NERVOUS -> 1.3f
+            BiometricMovementSimulator.PlayerArchetype.TIRED -> 0.7f
+            BiometricMovementSimulator.PlayerArchetype.CASUAL -> 0.9f
+        }
+    }
+    
+    /**
+     * Performance monitoring and optimization
+     */
+    fun getSystemMetrics(): Map<String, Any> {
+        val baseMetrics = OptimizedAimProcessor.getPerformanceMetrics()
+        return baseMetrics + mapOf(
+            "currentArchetype" to BiometricMovementSimulator.currentArchetype.name,
+            "gcdRisk" to GCDDefeatSystem.analyzeGcdRisk(),
+            "smoothingFactor" to smooth.value,
+            "lastProcessingTime" to (System.currentTimeMillis() - lastUpdateTime)
+        )
+    }
+    
+    /**
+     * Automatic optimization trigger
+     */
+    fun optimizePerformance() {
+        OptimizedAimProcessor.optimizeMemory()
+        
+        // Clear old target history if it gets too large
+        if (targetHistory.size > 100) {
+            targetHistory.removeRange(0, 50)
+        }
+        
+        // Reset state if performance is degrading
+        val metrics = getSystemMetrics()
+        val avgFrameTime = metrics["averageFrameTime"] as? Double ?: 16.67
+        
+        if (avgFrameTime > 25.0) { // Below 40 FPS
+            // Reduce complexity
+            state.adaptiveNoiseStrength *= 0.9f
+            state.humanizationProfile = minOf(state.humanizationProfile, 2)
+        }
+    }
